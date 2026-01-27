@@ -53,11 +53,11 @@ def get_candidate_clips(video_path, clip_duration=5, step=2):
            audio_score = get_audio_energy(video_path, start_time, end_time)
            combined_score = 0.6 * frame_score + 0.4 * audio_score
            candidates.append({
-               "start": start_time,
-               "end": end_time,
-               "motion_score": frame_score,
-               "audio_score": audio_score,
-               "score": combined_score
+               "start": float(start_time),
+               "end": float(end_time),
+               "motion_score": float(frame_score),
+               "audio_score": float(audio_score),
+               "score": float(combined_score)
            })
 
 
