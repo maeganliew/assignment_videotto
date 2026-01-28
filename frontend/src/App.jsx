@@ -3,6 +3,9 @@ import VideoUploader from "./components/VideoUploader";
 import StatusDisplay from "./components/StatusDisplay";
 import ClipResults from "./components/ClipResults";
 import "./App.css";
+import.meta.env
+
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 function App() {
   const [status, setStatus] = useState("idle");
@@ -10,7 +13,7 @@ function App() {
 
   const fetchStatus = async () => {
     try {
-      const res = await fetch("http://localhost:8000/status");
+      const res = await fetch(`${API_BASE}/status`);
       const data = await res.json();
       setStatus(data.state);
 
@@ -24,7 +27,7 @@ function App() {
 
   const fetchTopClips = async () => {
     try {
-      const res = await fetch("http://localhost:8000/topclips");
+      const res = await fetch(`${API_BASE}/topclips`);
       const data = await res.json();
       setTopClips(data);
     } catch (error) {
@@ -47,12 +50,12 @@ function App() {
       if (source.type === "file") {
         const formData = new FormData();
         formData.append("file", source.file);
-        await fetch("http://localhost:8000/upload", {
+        await fetch(`${API_BASE}/upload`, {
           method: "POST",
           body: formData,
         });
       } else if (source.type === "youtube") {
-        await fetch("http://localhost:8000/upload_youtube", {
+        await fetch(`${API_BASE}/upload_youtube`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ url: source.url }),
