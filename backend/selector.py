@@ -10,8 +10,8 @@ def select_top_clips(candidates, top_n=3):
         if clip['audio_score'] == 0:
             clip['score'] = clip['motion_score']
         if motion >= audio:
-            clip["reason"] = f"Clip {i} chosen for high motion (motion score={motion}). Total score: {clip['score']:.0f}"
+            clip["reason"] = f"Clip {i} chosen for high motion (motion score={motion}). Total score: {clip['score']:.1f}"
         else:
-            clip["reason"] = f"Clip {i} chosen for high audio (audio score={audio}). Total score: {clip['score']:.0f}"
+            clip["reason"] = f"Clip {i} chosen for high audio (audio score={audio}). Total score: {clip['score']:.1f}"
     
     return top_clips

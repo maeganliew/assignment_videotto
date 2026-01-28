@@ -23,8 +23,11 @@ def get_status():
 @app.post("/upload")
 async def upload_video(file: UploadFile = File(...)):
     global CANDIDATE_CLIPS
+    global TOP_CLIPS
     try:
         STATUS["state"] = "processing"
+        CANDIDATE_CLIPS = []
+        TOP_CLIPS = []
 
         path = f"uploads_{file.filename}"
         with open(path, "wb") as f:

@@ -48,9 +48,14 @@ def get_candidate_clips(video_path, clip_duration=5, step=2):
            frame_score += diff
            prev_frame = frame_gray
 
+            # average per frame difference
+           frame_score /= max(len(sample_times) - 1, 1)
+            # average per pixel
+           frame_score /= (frame_gray.shape[0] * frame_gray.shape[1])
+
 
        if valid_frame_found:
-           audio_score = get_audio_energy(video_path, start_time, end_time)
+           audio_score = get_audio_energy(video_path, start_time, end_time) * 10000
            combined_score = 0.6 * frame_score + 0.4 * audio_score
            candidates.append({
                "start": float(start_time),
