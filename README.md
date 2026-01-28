@@ -3,6 +3,9 @@
 ## Overview
 A simple system that selects the **top 3 clips** from a video, focusing on **explainable heuristics and clarity**.
 
+## Link to Website
+https://assignment-videotto-8e4d.vercel.app/
+
 ## How It Works
 1. **Video Input:** Upload a local video via the React frontend.
 2. **Candidate Clips:** Video split into overlapping windows (e.g., 5s) for scoring.
