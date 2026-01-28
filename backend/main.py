@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from video_utils import get_candidate_clips
-import time
+from selector import select_top_clips
 
 app = FastAPI()
 
@@ -43,3 +43,12 @@ async def upload_video(file: UploadFile = File(...)):
 @app.get("/candidates")
 def get_candidates():
     return CANDIDATE_CLIPS
+
+@app.get("/topclips")
+def get_top_clips():
+    global TOP_CLIPS
+    if not CANDIDATE_CLIPS:
+        return {"message": "No candidates yet"}
+    
+    TOP_CLIPS = select_top_clips(CANDIDATE_CLIPS, top_n=3)
+    return TOP_CLIPS
