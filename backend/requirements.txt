@@ -1,7 +1,7 @@
 fastapi
 uvicorn
 python-multipart
-moviepy
 librosa
 opencv-python
 numpy
+youtube_dl

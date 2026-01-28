@@ -57,18 +57,6 @@ function App() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ url: source.url }),
         });
-      } else if (source.type === "dropbox") {
-        await fetch("http://localhost:8000/upload_dropbox", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ url: source.url }),
-        });
-      } else if (source.type === "googledrive") {
-        await fetch("http://localhost:8000/upload_googledrive", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ fileId: source.fileId }),
-        });
       }
     } catch (error) {
       console.error("Error submitting video:", error);
