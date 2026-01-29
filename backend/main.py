@@ -71,7 +71,7 @@ def get_candidates():
 def get_top_clips():
     global TOP_CLIPS
     if not CANDIDATE_CLIPS:
-        return {"message": "No candidates yet"}
+        return []
     
     TOP_CLIPS = select_top_clips(CANDIDATE_CLIPS, top_n=3)
     return TOP_CLIPS
@@ -103,7 +103,7 @@ async def upload_youtube_video(request: YouTubeRequest):
         ], check=True)
 
         CANDIDATE_CLIPS = get_candidate_clips(path, clip_duration=5, step=2)
-
+        TOP_CLIPS = select_top_clips(CANDIDATE_CLIPS)
         STATUS["state"] = "completed"
         return {"message": "YouTube video processed successfully"}
 
