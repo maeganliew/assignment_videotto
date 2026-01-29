@@ -11,6 +11,7 @@ function App() {
   const [status, setStatus] = useState("idle");
   const [topClips, setTopClips] = useState([]);
 
+  
   const fetchStatus = async () => {
     try {
       const res = await fetch(`${API_BASE}/status`);
