@@ -49,7 +49,7 @@ async def upload_video(file: UploadFile = File(...)):
 
         converted_path = f"{UPLOAD_DIR}h264_{file.filename}"
         subprocess.run([
-            "ffmpeg", "-i", path,
+            "ffmpeg", "-i", path, "-y",
             "-c:v", "libx264", "-preset", "fast", "-crf", "23",
             "-c:a", "copy", converted_path
         ], check=True)
