@@ -59,6 +59,7 @@ async def upload_video(file: UploadFile = File(...)):
         STATUS["state"] = "failed"
         return {"error": str(e)}
     
+    
 @app.get("/candidates")
 def get_candidates():
     return CANDIDATE_CLIPS
