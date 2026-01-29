@@ -54,7 +54,7 @@ async def upload_video(file: UploadFile = File(...)):
             "-c:a", "copy", converted_path
         ], check=True)
         CANDIDATE_CLIPS = get_candidate_clips(converted_path, clip_duration=5, step=2)
-        
+        TOP_CLIPS = select_top_clips(CANDIDATE_CLIPS)
         STATUS["state"] = "completed"
         return {"message": "Video uploaded successfully"}
 
