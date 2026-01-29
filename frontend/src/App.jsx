@@ -11,34 +11,8 @@ function App() {
   const [status, setStatus] = useState("idle");
   const [topClips, setTopClips] = useState([]);
 
-
-  const fetchStatus = async () => {
-    try {
-      const res = await fetch(`${API_BASE}/status`);
-      const data = await res.json();
-      setStatus(data.state);
-
-      if (data.state === "completed") {
-        fetchTopClips();
-      }
-    } catch (error) {
-      console.error("Error fetching status:", error);
-    }
-  };
-
-  const fetchTopClips = async () => {
-    try {
-      const res = await fetch(`${API_BASE}/topclips`);
-      const data = await res.json();
-      setTopClips(data);
-      console.log("Top clips:", data);
-    } catch (error) {
-      console.error("Error fetching clips:", error);
-    }
-  };
-
   const resetAll = async () => {
-    setStatus("idle");
+    setStatus("processing");
     setTopClips([]);
     try {
       await fetch(`${API_BASE}/reset`, { method: "POST" });
@@ -58,7 +32,6 @@ function App() {
           const clipsRes = await fetch(`${API_BASE}/topclips`);
           const clipsData = await clipsRes.json();
           setTopClips(clipsData);
-          clearInterval(interval); // stops polling backend
         }
       } catch (err) {
         console.error(err);
@@ -69,9 +42,7 @@ function App() {
   }, []);
 
   const handleVideoSubmit = async (source) => {
-    setStatus("processing");
-    setTopClips([]);
-    resetAll();
+    await resetAll();
     console.log("reset stuff");
 
     try {
