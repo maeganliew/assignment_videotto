@@ -40,6 +40,7 @@ function App() {
     setStatus("idle");
     setTopClips([]);
 
+    
     const interval = setInterval(async () => {
       try {
         const res = await fetch(`${API_BASE}/status`);
