@@ -5,8 +5,12 @@ from selector import select_top_clips
 import requests
 import yt_dlp as youtube_dl
 from pydantic import BaseModel
+import subprocess
 
 app = FastAPI()
+UPLOAD_DIR = "uploads/"
+uploaded_file_path = None
+converted_file_path = None
 
 # Frontend
 app.add_middleware(
@@ -36,13 +40,18 @@ async def upload_video(file: UploadFile = File(...)):
         CANDIDATE_CLIPS = []
         TOP_CLIPS = []
 
-        path = f"uploads_{file.filename}"
+        path = f"{UPLOAD_DIR}{file.filename}"
         with open(path, "wb") as f:
             f.write(await file.read())
 
-        # Extract candidate clips
-        CANDIDATE_CLIPS = get_candidate_clips(path, clip_duration=5, step=2)
-
+        converted_path = f"{UPLOAD_DIR}h264_{file.filename}"
+        subprocess.run([
+            "ffmpeg", "-i", path,
+            "-c:v", "libx264", "-preset", "fast", "-crf", "23",
+            "-c:a", "copy", converted_path
+        ], check=True)
+        CANDIDATE_CLIPS = get_candidate_clips(converted_path, clip_duration=5, step=2)
+        
         STATUS["state"] = "completed"
         return {"message": "Video uploaded successfully"}
 
@@ -81,6 +90,13 @@ async def upload_youtube_video(request: YouTubeRequest):
         }
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([request.url])
+
+        converted_path = "temp_video_h264.mp4"
+        subprocess.run([
+            "ffmpeg", "-i", path,
+            "-c:v", "libx264", "-preset", "fast", "-crf", "23",
+            "-c:a", "copy", converted_path
+        ], check=True)
 
         CANDIDATE_CLIPS = get_candidate_clips(path, clip_duration=5, step=2)
 
