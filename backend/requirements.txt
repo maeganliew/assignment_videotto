@@ -16,7 +16,7 @@ librosa==0.11.0
 llvmlite==0.46.0
 msgpack==1.1.2
 numba==0.63.1
-numpy==2.3.5
+numpy==1.26.4
 opencv-python==4.13.0.90
 packaging==26.0
 platformdirs==4.5.1
