@@ -47,7 +47,7 @@ function App() {
         setStatus(data.state);
 
         if (data.state === "completed") {
-          const clipsRes = await fetch(`${API_BASE}/top_clips`);
+          const clipsRes = await fetch(`${API_BASE}/topclips`);
           const clipsData = await clipsRes.json();
           setTopClips(clipsData);
           clearInterval(interval); // stops polling backend
