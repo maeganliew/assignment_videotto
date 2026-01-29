@@ -7,6 +7,7 @@ import yt_dlp as youtube_dl
 from pydantic import BaseModel
 import subprocess
 import os
+import time
 
 app = FastAPI()
 UPLOAD_DIR = "uploads/"
@@ -118,3 +119,7 @@ def reset_backend():
     CANDIDATE_CLIPS = []
     TOP_CLIPS = []
     return {"message": "Backend reset successfully"}
+
+@app.get("/ping")
+def ping():
+    return {"time": time.time(), "version": "latest"}
