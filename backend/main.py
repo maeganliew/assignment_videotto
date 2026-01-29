@@ -6,6 +6,7 @@ import requests
 import yt_dlp as youtube_dl
 from pydantic import BaseModel
 import subprocess
+import os
 
 app = FastAPI()
 UPLOAD_DIR = "uploads/"
@@ -26,6 +27,8 @@ class YouTubeRequest(BaseModel):
 
 STATUS = {"state": "idle"}
 CANDIDATE_CLIPS = []
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "uploads")
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.get("/status")
 def get_status():
@@ -59,7 +62,7 @@ async def upload_video(file: UploadFile = File(...)):
         STATUS["state"] = "failed"
         return {"error": str(e)}
     
-    
+
 @app.get("/candidates")
 def get_candidates():
     return CANDIDATE_CLIPS
