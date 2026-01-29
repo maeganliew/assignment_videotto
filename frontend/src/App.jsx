@@ -11,7 +11,7 @@ function App() {
   const [status, setStatus] = useState("idle");
   const [topClips, setTopClips] = useState([]);
 
-  
+
   const fetchStatus = async () => {
     try {
       const res = await fetch(`${API_BASE}/status`);
@@ -39,7 +39,24 @@ function App() {
   useEffect(() => {
     setStatus("idle");
     setTopClips([]);
-    const interval = setInterval(fetchStatus, 500);
+
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch(`${API_BASE}/status`);
+        const data = await res.json();
+        setStatus(data.state);
+
+        if (data.state === "completed") {
+          const clipsRes = await fetch(`${API_BASE}/top_clips`);
+          const clipsData = await clipsRes.json();
+          setTopClips(clipsData);
+          clearInterval(interval); // stops polling backend
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }, 500);
+
     return () => clearInterval(interval);
   }, []);
 
