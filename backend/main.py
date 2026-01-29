@@ -110,3 +110,11 @@ async def upload_youtube_video(request: YouTubeRequest):
     except Exception as e:
         STATUS["state"] = "failed"
         return {"error": str(e)}
+    
+@app.post("/reset")
+def reset_backend():
+    global STATUS, CANDIDATE_CLIPS, TOP_CLIPS
+    STATUS["state"] = "processing"
+    CANDIDATE_CLIPS = []
+    TOP_CLIPS = []
+    return {"message": "Backend reset successfully"}

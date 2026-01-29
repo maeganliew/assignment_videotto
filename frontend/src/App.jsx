@@ -31,16 +31,23 @@ function App() {
       const res = await fetch(`${API_BASE}/topclips`);
       const data = await res.json();
       setTopClips(data);
+      console.log("Top clips:", data);
     } catch (error) {
       console.error("Error fetching clips:", error);
     }
   };
 
-  useEffect(() => {
+  const resetAll = async () => {
     setStatus("idle");
     setTopClips([]);
+    try {
+      await fetch(`${API_BASE}/reset`, { method: "POST" });
+    } catch (err) {
+      console.error("Failed to reset backend:", err);
+    }
+  };
 
-    
+  useEffect(() => {
     const interval = setInterval(async () => {
       try {
         const res = await fetch(`${API_BASE}/status`);
@@ -64,6 +71,8 @@ function App() {
   const handleVideoSubmit = async (source) => {
     setStatus("processing");
     setTopClips([]);
+    resetAll();
+    console.log("reset stuff");
 
     try {
       if (source.type === "file") {
